@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Medicines | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .neon-text { text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+    .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen relative flex flex-col md:flex-row overflow-hidden">
+
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[150px] pointer-events-none z-0"></div>
+
+  <!-- LEFT SIDEBAR -->
+  <%- include('../includes/sidebar-admin', { activePage: 'manage-medicines' }) %>
+
+  <!-- RIGHT CONTENT -->
+  <main class="flex-1 p-6 lg:p-10 space-y-8 overflow-y-auto max-h-screen relative z-10 scrollbar-thin">
+    <% if (message) { %>
+      <div class="bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 px-4 py-3 rounded-xl text-sm font-bold flex items-center shadow-[0_0_15px_rgba(6,182,212,0.2)] backdrop-blur-sm">
+        <i class="fas fa-check-circle mr-2 text-cyan-400"></i> <%= message %>
+      </div>
+    <% } %>
+
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <!-- LEFT ACTION PANEL -->
+      <div class="xl:col-span-1 glass rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] p-6 self-start border border-white/5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-600"></div>
+        <h2 class="font-bold text-white text-sm mb-5 uppercase tracking-widest"> <%= editMedicine ? 'Edit Medicine' : 'Add New Medicine' %> </h2>
+        <form method="POST" action="/admin/manage-medicines">
+          <% if (editMedicine) { %>
+            <input type="hidden" name="update_medicine" value="1">
+            <input type="hidden" name="medicine_id" value="<%= editMedicine.medicine_id %>">
+          <% } else { %>
+            <input type="hidden" name="add_medicine" value="1">
+          <% } %>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Name</label>
+              <input type="text" name="name" required value="<%= editMedicine ? editMedicine.name : '' %>" class="w-full bg-[#0e172a] border border-white/10 text-white rounded-xl py-2 px-3 focus:ring-2 focus:ring-cyan-500 outline-none text-xs transition">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Dosage</label>
+              <input type="text" name="dosage" required value="<%= editMedicine ? editMedicine.dosage : '' %>" class="w-full bg-[#0e172a] border border-white/10 text-white rounded-xl py-2 px-3 focus:ring-2 focus:ring-cyan-500 outline-none text-xs transition">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Type (Pill, Syrup, etc.)</label>
+              <input type="text" name="type" value="<%= editMedicine ? editMedicine.type : '' %>" class="w-full bg-[#0e172a] border border-white/10 text-white rounded-xl py-2 px-3 focus:ring-2 focus:ring-cyan-500 outline-none text-xs transition">
+            </div>
+            <div class="flex gap-2 pt-2">
+              <% if (editMedicine) { %>
+                <a href="/admin/manage-medicines" class="flex-1 text-center bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl border border-white/10 transition text-xs uppercase tracking-widest">Cancel</a>
+              <% } %>
+              <button type="submit" class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)] transition text-xs uppercase tracking-widest"><%= editMedicine ? 'Update' : 'Add' %></button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT LIST PANEL -->
+      <div class="xl:col-span-3 glass rounded-3xl overflow-hidden border border-white/5 shadow-lg">
+        <div class="px-6 py-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
+          <h3 class="font-bold text-white text-sm"><i class="fas fa-pills text-cyan-400 mr-2"></i>Medicine Records</h3>
+          <span class="text-[10px] text-gray-500 uppercase tracking-widest font-mono"><%= medicines.length %> Entries</span>
+        </div>
+        <div class="overflow-x-auto scrollbar-thin">
+          <% if (medicines.length === 0) { %>
+            <div class="p-12 text-center text-gray-500 text-xs font-mono">No medicine records created yet.</div>
+          <% } else { %>
+            <table class="w-full text-left text-xs whitespace-nowrap">
+              <thead class="bg-white/5 border-b border-white/10 text-gray-400">
+                <tr>
+                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-cyan-400">Name</th>
+                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-cyan-400">Dosage</th>
+                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-cyan-400">Type</th>
+                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-cyan-400 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <% medicines.forEach(function(med) { %>
+                  <tr class="hover:bg-white/5 transition">
+                    <td class="px-6 py-4 text-white font-bold"><%= med.name %></td>
+                    <td class="px-6 py-4 text-gray-300 font-mono"><%= med.dosage %></td>
+                    <td class="px-6 py-4 text-gray-300 font-mono"><%= med.type || 'N/A' %></td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex justify-end gap-2">
+                        <a href="/admin/manage-medicines?edit=<%= med.medicine_id %>" class="text-[10px] bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-500/50 text-cyan-300 font-bold px-3 py-1.5 rounded-lg transition shadow-sm uppercase tracking-widest"><i class="fas fa-edit"></i></a>
+                        <form method="POST" action="/admin/manage-medicines" onsubmit="return confirm('Delete this medicine permanently?')" class="inline">
+                          <input type="hidden" name="delete_medicine" value="1">
+                          <input type="hidden" name="medicine_id" value="<%= med.medicine_id %>">
+                          <button type="submit" class="text-[10px] bg-red-500/20 hover:bg-red-500/40 border border-red-500/50 text-red-300 font-bold px-3 py-1.5 rounded-lg transition shadow-sm uppercase tracking-widest"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

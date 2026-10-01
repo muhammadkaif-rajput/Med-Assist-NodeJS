@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prescription_<%= appointment.appointment_id %>_MedAssist</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 40px; line-height: 1.6; }
+        .prescription-container { max-w: 800px; margin: auto; border: 1px solid #ddd; padding: 40px; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; border-bottom: 3px double #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .clinic-logo { font-size: 24px; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 1px; }
+        .clinic-logo span { color: #0f172a; }
+        .doctor-info { text-align: right; font-size: 13px; }
+        .doctor-info h2 { margin: 0 0 5px 0; font-size: 18px; color: #1e293b; }
+        .patient-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 40px; }
+        .patient-bar div { display: flex; flex-direction: column; }
+        .patient-bar span strong { color: #475569; }
+        .rx-symbol { font-size: 32px; font-weight: bold; font-family: Georgia, serif; color: #0f172a; margin-bottom: 10px; }
+        .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; font-weight: 700; }
+        .prescription-content { min-height: 250px; font-size: 14px; font-family: monospace; white-space: pre-wrap; color: #1e293b; margin-bottom: 40px; line-height: 1.8; }
+        .advice-content { font-size: 13.5px; color: #334155; margin-bottom: 40px; white-space: pre-wrap; line-height: 1.6; }
+        .footer { border-top: 1px solid #e2e8f0; padding-top: 20px; display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 50px; }
+        .signature-area { text-align: right; width: 200px; }
+        .signature-line { border-bottom: 1px solid #94a3b8; height: 40px; margin-bottom: 5px; }
+        
+        .no-print-btn { background: #0284c7; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 20px; font-size: 13px; }
+        .no-print-btn:hover { background: #0369a1; }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; margin: 0; color: #000; }
+            .prescription-container { border: none; box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div style="max-w: 800px; margin: auto;" class="no-print">
+        <button onclick="window.print()" class="no-print-btn"><i class="fas fa-print"></i> Print / Save PDF</button>
+        <a href="/patient/appointments" class="no-print-btn" style="background:#64748b; margin-left: 10px;">Back to Log</a>
+    </div>
+
+    <div class="prescription-container">
+        
+        <!-- Clinical Header -->
+        <div class="header">
+            <div>
+                <div class="clinic-logo">Med<span>Assist</span></div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 5px;">AI-Enabled Healthcare Assistant Portal</div>
+            </div>
+            <div class="doctor-info">
+                <h2>Dr. <%= appointment.doctor_name %></h2>
+                <div style="font-weight: 600; color: #0284c7;"><%= appointment.specialization %></div>
+                <div style="color: #64748b; margin-top: 3px;">Tel: <%= appointment.doctor_contact || 'N/A' %></div>
+            </div>
+        </div>
+
+        <!-- Patient Demographics -->
+        <div class="patient-bar">
+            <div>
+                <span><strong>Patient Name:</strong> <%= appointment.patient_name %></span>
+                <span><strong>Phone:</strong> <%= appointment.patient_phone || 'N/A' %></span>
+            </div>
+            <div>
+                <span><strong>Gender:</strong> <%= appointment.gender %></span>
+                <span><strong>Email:</strong> <%= appointment.patient_email %></span>
+            </div>
+            <div>
+                <span><strong>Date:</strong> <%= appointment.appointment_date.toISOString().slice(0, 10) %></span>
+                <span><strong>Time slot:</strong> <%= appointment.appointment_time || 'N/A' %></span>
+            </div>
+        </div>
+
+        <!-- RX Prescription Details -->
+        <div>
+            <div class="rx-symbol">R<sub>x</sub></div>
+            <div class="section-title">Prescription & Dosage</div>
+            <div class="prescription-content"><%= appointment.prescription || 'No prescription details logged.' %></div>
+        </div>
+
+        <!-- Doctor Advice / Notes -->
+        <div>
+            <div class="section-title">Advice / Clinical Notes</div>
+            <div class="advice-content"><%= appointment.doctor_notes || 'No clinical advice notes logged.' %></div>
+        </div>
+
+        <!-- Clinical Footer / Sign-off -->
+        <div class="footer">
+            <div>
+                <div>MedAssist System Report</div>
+                <div>Generated on: <%= new Date().toISOString().replace('T', ' ').substring(0, 19) %></div>
+            </div>
+            <div class="signature-area">
+                <div class="signature-line"></div>
+                <div>Authorized Signature</div>
+                <div style="font-size: 9px; margin-top: 2px;">Dr. <%= appointment.doctor_name %></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Trigger print dialog automatically
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

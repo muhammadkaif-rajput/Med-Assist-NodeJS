@@ -1,0 +1,23 @@
+<aside class="w-full md:w-64 shrink-0 space-y-4">
+  <div class="glass p-5 rounded-2xl relative overflow-hidden mb-8">
+    <div class="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1">Doctor Info</p>
+    <p class="font-bold text-white text-lg truncate">Dr. <%= userName %></p>
+  </div>
+  
+  <a href="/doctor/dashboard" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'dashboard' ? 'font-bold bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-chart-pie w-5 <%= activePage === 'dashboard' ? 'text-purple-400' : 'text-gray-500' %>"></i> Dashboard
+  </a>
+  <a href="/doctor/appointments" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'appointments' ? 'font-bold bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-calendar-check w-5 <%= activePage === 'appointments' ? 'text-purple-400' : 'text-gray-500' %>"></i> Appointments
+  </a>
+  <a href="/doctor/patients" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'patients' ? 'font-bold bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-user-injured w-5 <%= activePage === 'patients' ? 'text-purple-400' : 'text-gray-500' %>"></i> Patients Directory
+  </a>
+  <a href="/doctor/patient-history" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'patient-history' ? 'font-bold bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-folder-medical w-5 <%= activePage === 'patient-history' ? 'text-purple-400' : 'text-gray-500' %>"></i> Medical Records
+  </a>
+  <a href="/doctor/messages" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'messages' ? 'font-bold bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-comments w-5 <%= activePage === 'messages' ? 'text-purple-400' : 'text-gray-500' %>"></i> Patient Messages
+  </a>
+</aside>

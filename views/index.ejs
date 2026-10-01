@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedAssist | Smart Health Recommendation System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .neon-text {
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen flex flex-col relative overflow-hidden">
+  
+  <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[50%] rounded-full bg-cyan-600/20 blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-fuchsia-600/20 blur-[120px] pointer-events-none"></div>
+
+  <nav class="glass sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] rounded-xl flex items-center justify-center font-bold">
+          <i class="fas fa-heartbeat text-lg"></i>
+        </div>
+        <span class="font-bold text-2xl tracking-wide text-white">Med<span class="text-cyan-400 neon-text">Assist</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/auth/login" class="text-sm font-semibold text-gray-300 hover:text-cyan-400 transition">Login</a>
+        <a href="/auth/register" class="text-sm font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.3)] transition transform hover:-translate-y-0.5">Register</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 flex flex-col items-center justify-center px-4 py-20 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span class="text-xs font-bold tracking-widest text-cyan-200 uppercase">Smart AI Matcher</span>
+    </div>
+    <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight max-w-5xl leading-tight mb-6">
+      Intelligent Health <br>
+      <span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent filter drop-shadow-lg">Recommendation System.</span>
+    </h1>
+    <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-12 leading-relaxed">
+      A fast, reliable platform that connects your symptoms with potential conditions and medical advice, instantly.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-5 w-full justify-center max-w-xl">
+      <a href="/auth/register" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-4 px-8 rounded-full shadow-[0_0_25px_rgba(6,182,212,0.4)] transition transform hover:-translate-y-1 text-lg">
+        Create Your Account <i class="fas fa-arrow-right ml-2"></i>
+      </a>
+    </div>
+
+    <div class="mt-28 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full text-left">
+      <div class="glass p-8 rounded-3xl group hover:bg-white/10 transition duration-300">
+        <div class="w-14 h-14 bg-cyan-500/20 text-cyan-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-[inset_0_0_10px_rgba(6,182,212,0.2)] group-hover:bg-cyan-500/30 transition"><i class="fas fa-microscope"></i></div>
+        <h3 class="font-bold text-white text-xl mb-3">Symptom Checker</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Simply type out what you are feeling and let the system match it against our database of diseases.</p>
+      </div>
+      <div class="glass p-8 rounded-3xl relative overflow-hidden group hover:bg-white/10 transition duration-300 transform md:-translate-y-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-purple-500"></div>
+        <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)] group-hover:bg-purple-500/30 transition"><i class="fas fa-capsules"></i></div>
+        <h3 class="font-bold text-white text-xl mb-3">Medicine Advice</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Receive instant suggestions on medicines and home remedies tailored to your matched conditions.</p>
+      </div>
+      <div class="glass p-8 rounded-3xl group hover:bg-white/10 transition duration-300">
+        <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-[inset_0_0_10px_rgba(59,130,246,0.2)] group-hover:bg-blue-500/30 transition"><i class="fas fa-user-md"></i></div>
+        <h3 class="font-bold text-white text-xl mb-3">Doctor Appointments</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Easily search through our roster of verified specialists and book an appointment with a simple click.</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

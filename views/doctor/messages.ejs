@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Consultations & Chat | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .neon-text { text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+    .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen relative overflow-x-hidden">
+  
+  <div class="fixed top-0 left-0 w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[150px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-0 right-0 w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[150px] pointer-events-none z-0"></div>
+
+  <nav class="glass sticky top-0 z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] rounded-xl flex items-center justify-center font-bold">
+          <i class="fas fa-comments text-lg"></i>
+        </div>
+        <span class="font-bold text-xl tracking-wide text-white">Med<span class="text-cyan-400 neon-text">Assist</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-xs text-cyan-400 font-semibold font-mono tracking-widest uppercase">Doctor Panel</span>
+        <a href="/auth/logout" class="text-xs font-bold uppercase tracking-widest text-red-400 hover:text-red-300 transition">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8 relative z-10">
+    
+    <!-- LEFT SIDEBAR -->
+    <%- include('../includes/sidebar-doctor') %>
+
+    <!-- RIGHT CONTENT - MESSAGING CHAT BOARD -->
+    <main class="flex-1 space-y-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[600px]">
+          
+          <!-- PATIENTS DIRECTORY (COL-4) -->
+          <div class="lg:col-span-4 glass rounded-3xl border border-white/5 flex flex-col overflow-hidden h-full shadow-lg">
+              <div class="p-4 border-b border-white/5 bg-white/5">
+                  <h3 class="font-bold text-white text-sm"><i class="fas fa-users text-cyan-400 mr-2"></i>Active Consultations</h3>
+                  <p class="text-[9px] text-gray-500 mt-0.5 uppercase tracking-widest">Select patient inbox</p>
+              </div>
+              <div class="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-2">
+                  <% if (patients.length === 0) { %>
+                      <div class="p-6 text-center text-gray-500 text-xs font-mono">No active conversations found yet.</div>
+                  <% } else { %>
+                      <% patients.forEach(function(pat) { 
+                          let isActive = (selected_patient_id === pat.id) ? 'bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-cyan-500/30' : 'hover:bg-white/5 border-transparent';
+                      %>
+                          <a href="/doctor/messages?patient_id=<%= pat.id %>" class="flex items-center justify-between p-3.5 rounded-2xl border text-left transition <%= isActive %>">
+                              <div>
+                                  <span class="font-bold text-xs text-white block"><%= pat.name %></span>
+                                  <span class="text-[10px] text-gray-500 font-mono mt-0.5 block uppercase tracking-wider"><%= pat.gender %></span>
+                              </div>
+                          </a>
+                      <% }) %>
+                  <% } %>
+              </div>
+          </div>
+
+          <!-- CHAT BOX PANEL (COL-8) -->
+          <div class="lg:col-span-8 glass rounded-3xl border border-white/5 flex flex-col overflow-hidden h-full shadow-lg">
+              <% if (selected_patient_id === 0) { %>
+                  <!-- No conversation selected view -->
+                  <div class="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-3">
+                      <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 text-2xl">
+                          <i class="far fa-comments"></i>
+                      </div>
+                      <h4 class="font-bold text-white text-sm">Select Conversation</h4>
+                      <p class="text-xs text-gray-500 max-w-xs leading-relaxed">Choose a patient conversation thread on the left to review medical queries and provide clinical feedback.</p>
+                  </div>
+              <% } else { 
+                  let active_pat = null;
+                  patients.forEach(function(p) {
+                      if (p.id === selected_patient_id) { active_pat = p; }
+                  });
+              %>
+                  <!-- Header -->
+                  <div class="px-6 py-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                      <div class="flex items-center gap-3">
+                          <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                              <i class="fas fa-user-injured"></i>
+                          </div>
+                          <div>
+                              <span class="font-bold text-xs text-white block"><%= active_pat.name %></span>
+                              <span class="text-[9px] text-gray-500 font-mono tracking-widest uppercase block">Patient Profile</span>
+                          </div>
+                      </div>
+                      <a href="/doctor/patient-history?id=<%= selected_patient_id %>" class="text-[10px] bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-500/50 text-cyan-300 font-bold px-3 py-1.5 rounded-lg transition uppercase tracking-widest">
+                          <i class="fas fa-folder-open mr-1"></i>View History
+                      </a>
+                  </div>
+
+                  <!-- Chat Bubble Stream -->
+                  <div id="chatStream" class="flex-1 overflow-y-auto scrollbar-thin p-6 space-y-4">
+                      <% if (chat_messages.length === 0) { %>
+                          <div class="text-center p-12 text-gray-500 text-xs font-mono">No messages exchanged.</div>
+                      <% } else { %>
+                          <% chat_messages.forEach(function(msg) { 
+                              let isMe = (msg.sender_id === userId);
+                          %>
+                              <div class="flex <%= isMe ? 'justify-end' : 'justify-start' %>">
+                                  <div class="max-w-[75%] rounded-2xl px-4 py-2.5 text-xs relative space-y-1 shadow-md <%= isMe ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-tr-none' : 'bg-white/5 border border-white/10 text-gray-200 rounded-tl-none' %>">
+                                      <p class="leading-relaxed whitespace-pre-wrap"><%= msg.message_text %></p>
+                                      <span class="block text-[8px] font-mono text-right text-white/50"><%= msg.sent_at.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></span>
+                                  </div>
+                              </div>
+                          <% }) %>
+                      <% } %>
+                  </div>
+
+                  <!-- Chat Input Form -->
+                  <div class="p-4 border-t border-white/5 bg-white/3">
+                      <form method="POST" action="/doctor/messages" class="flex gap-2.5">
+                          <input type="hidden" name="patient_id" value="<%= selected_patient_id %>">
+                          <input type="text" name="message_text" required autocomplete="off" placeholder="Write clinical response..." class="flex-1 bg-white/5 border border-white/10 text-white rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500 outline-none text-xs transition">
+                          <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold w-11 rounded-xl flex items-center justify-center transition shadow-[0_0_10px_rgba(6,182,212,0.3)] shrink-0">
+                              <i class="fas fa-paper-plane text-xs"></i>
+                          </button>
+                      </form>
+                  </div>
+              <% } %>
+          </div>
+
+      </div>
+
+    </main>
+
+  </div>
+  
+  <script>
+      // Auto scroll chat to bottom
+      const stream = document.getElementById('chatStream');
+      if (stream) {
+          stream.scrollTop = stream.scrollHeight;
+      }
+  </script>
+</body>
+</html>

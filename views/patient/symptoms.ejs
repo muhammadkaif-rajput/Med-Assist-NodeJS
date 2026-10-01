@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Symptoms | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .neon-text { text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+    .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.3); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen relative overflow-x-hidden">
+
+  <div class="fixed top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-600/10 blur-[150px] pointer-events-none z-0"></div>
+
+  <nav class="glass sticky top-0 z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] rounded-xl flex items-center justify-center font-bold">
+          <i class="fas fa-heartbeat text-lg"></i>
+        </div>
+        <span class="font-bold text-xl tracking-wide text-white">Med<span class="text-cyan-400 neon-text">Assist</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/auth/logout" class="text-xs font-bold uppercase tracking-widest text-red-400 hover:text-red-300 transition">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8 relative z-10">
+    
+    <!-- LEFT SIDEBAR -->
+    <%- include('../includes/sidebar-patient') %>
+
+    <main class="flex-1">
+      <div class="glass p-8 md:p-10 rounded-3xl relative overflow-hidden border border-white/5 shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px]"></div>
+
+        <div class="relative z-10">
+            <h2 class="text-2xl font-extrabold text-white mb-2">Symptom Checker</h2>
+            <p class="text-sm text-gray-400 mb-8 max-w-xl">Enter how you are feeling below to let our AI scan for possible matching conditions in our database.</p>
+
+            <form method="POST" action="/patient/symptoms" class="space-y-6 mb-10">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Your Selected Symptoms</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-keyboard text-purple-400/50 group-focus-within:text-purple-400 transition"></i>
+                        </div>
+                        <input type="text" name="sMPT_string" id="sMPT_string" value="<%= inputSymptoms %>"
+                               placeholder="Selected symptoms will appear here (or type them separated by spaces)"
+                               class="w-full bg-white/5 border border-white/10 text-white rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Choose Symptoms from List</label>
+                    <div class="glass p-5 rounded-2xl border border-white/5 max-h-60 overflow-y-auto scrollbar-thin flex flex-wrap gap-2.5">
+                        <% allSymptoms.forEach(function(sym) { %>
+                            <button type="button" data-name="<%= sym %>" onclick="toggleSymptom('<%= sym.replace(/'/g, "\\'") %>', this)" class="symptom-tag px-3.5 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-gray-400 hover:text-white hover:border-purple-500/50 transition duration-200">
+                                <i class="fas fa-plus mr-1.5 opacity-50"></i> <%= sym %>
+                            </button>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <div class="text-center pt-2">
+                     <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold py-4 px-12 rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.4)] transition text-sm uppercase tracking-widest">
+                         <i class="fas fa-microscope mr-2"></i> Analyze Symptoms
+                     </button>
+                </div>
+            </form>
+
+            <% if (analysisResult !== null) { %>
+                <div class="mt-8 relative hidden" id="scan_line_container"><div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent animate-scan"></div></div>
+
+                <% if (words.length > 0) { %>
+                <div class="mt-4 border-t border-white/10 pt-6 mb-6">
+                    <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-book text-purple-400"></i> Wikipedia Information
+                    </h3>
+                    <% words.forEach(function(sym) { %>
+                        <% if (wikiSummaries[sym]) { %>
+                            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4">
+                                <h4 class="font-bold text-purple-300 mb-2 capitalize"><%= sym %></h4>
+                                <p class="text-sm text-gray-300"><%= wikiSummaries[sym] %></p>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+                <% } %>
+
+                <div class="border-t border-white/10 pt-8">
+                    <h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-poll text-purple-400"></i> Analysis Results</h3>
+
+                    <% if (analysisResult.length === 0) { %>
+                        <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center text-red-400">
+                            <i class="fas fa-exclamation-triangle text-3xl mb-3 opacity-80"></i>
+                            <p class="font-bold text-sm">No Match Found</p>
+                            <p class="text-xs text-red-500/80 mt-1">Our database does not recognize these symptoms. We advise consulting a doctor directly.</p>
+                        </div>
+                    <% } else { %>
+                        <div class="grid gap-4">
+                            <% analysisResult.forEach(function(res) { %>
+                                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition group">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h4 class="font-bold text-lg text-white group-hover:text-purple-400 transition"><%= res.disease_name %></h4>
+                                        <span class="px-3 py-1 bg-purple-500/20 border border-purple-500/30 text-purple-300 text-[10px] uppercase tracking-widest rounded-lg font-bold"><%= res.severity %></span>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mb-4"><%= res.description %></p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <% if (res.medicine) { %>
+                                        <div class="bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl">
+                                            <p class="text-[10px] text-blue-400 uppercase tracking-widest font-bold mb-1"><i class="fas fa-pills mb-1"></i> Recommended Medicine</p>
+                                            <p class="text-sm text-white font-mono"><%= res.medicine %> <span class="text-gray-500 text-xs">(<%= res.dosage %>)</span></p>
+                                        </div>
+                                        <% } %>
+                                        <% if (res.advice_text) { %>
+                                        <div class="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl col-span-2 sm:col-span-1">
+                                            <p class="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1"><i class="fas fa-leaf mb-1"></i> General Advice</p>
+                                            <p class="text-sm text-white"><%= res.advice_text %></p>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+
+                        <div class="mt-8 text-center bg-white/5 border border-white/10 p-5 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                            <p class="text-xs text-gray-400 mb-4 uppercase tracking-widest">Want a professional opinion?</p>
+                            <a href="/patient/book-appointment" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.4)] transition text-sm uppercase tracking-wider">Book a Doctor Appointment</a>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <style>
+      @keyframes scan { 0% { transform: translateY(-20px); } 100% { transform: translateY(400px); opacity: 0; } }
+      .animate-scan { animation: scan 2s linear infinite; }
+  </style>
+  <script>
+      // Store selected symptoms as array of FULL NAMES (multi-word supported)
+      let selectedSymptoms = [];
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const inputVal = document.getElementById('sMPT_string').value.trim();
+          if (inputVal) {
+              // Split by comma or semicolon only — NOT by space
+              // so multi-word symptoms like "Chest Pain" stay together
+              selectedSymptoms = inputVal.split(/[,;]+/)
+                  .map(s => s.trim().toLowerCase())
+                  .filter(s => s.length > 0);
+
+              // Highlight tags whose full name matches a selected symptom
+              document.querySelectorAll('.symptom-tag').forEach(btn => {
+                  const name = btn.getAttribute('data-name').toLowerCase();
+                  if (selectedSymptoms.includes(name)) {
+                      highlightTag(btn);
+                  }
+              });
+          }
+      });
+
+      function toggleSymptom(name, btn) {
+          name = name.toLowerCase();
+          const index = selectedSymptoms.indexOf(name);
+          if (index > -1) {
+              selectedSymptoms.splice(index, 1);
+              unhighlightTag(btn);
+          } else {
+              selectedSymptoms.push(name);
+              highlightTag(btn);
+          }
+          // Join with comma+space so multi-word names are preserved
+          document.getElementById('sMPT_string').value = selectedSymptoms.join(', ');
+      }
+
+      function highlightTag(btn) {
+          btn.classList.remove('bg-white/5', 'border-white/10', 'text-gray-400');
+          btn.classList.add('bg-purple-500/20', 'border-purple-500', 'text-white', 'font-bold', 'shadow-[0_0_10px_rgba(168,85,247,0.3)]');
+          const icon = btn.querySelector('i');
+          if (icon) { icon.className = 'fas fa-check mr-1.5 text-purple-400'; }
+      }
+
+      function unhighlightTag(btn) {
+          btn.classList.add('bg-white/5', 'border-white/10', 'text-gray-400');
+          btn.classList.remove('bg-purple-500/20', 'border-purple-500', 'text-white', 'font-bold', 'shadow-[0_0_10px_rgba(168,85,247,0.3)]');
+          const icon = btn.querySelector('i');
+          if (icon) { icon.className = 'fas fa-plus mr-1.5 opacity-50'; }
+      }
+
+      document.querySelector('form').addEventListener('submit', () => {
+          document.getElementById('scan_line_container')?.classList.remove('hidden');
+      });
+  </script>
+</body>
+</html>

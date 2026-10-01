@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Medical History | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .neon-text { text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+    .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.3); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen relative overflow-x-hidden">
+  
+  <div class="fixed top-0 right-0 w-[60%] h-[60%] rounded-full bg-purple-600/10 blur-[150px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-0 left-0 w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[150px] pointer-events-none z-0"></div>
+
+  <nav class="glass sticky top-0 z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-tr from-purple-500 to-indigo-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] rounded-xl flex items-center justify-center font-bold">
+          <i class="fas fa-stethoscope text-lg"></i>
+        </div>
+        <span class="font-bold text-xl tracking-wide text-white">Med<span class="text-purple-400 neon-text">Assist</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/auth/logout" class="text-xs font-bold uppercase tracking-widest text-red-400 hover:text-red-300 transition">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8 relative z-10">
+    
+    <!-- LEFT SIDEBAR -->
+    <%- include('../includes/sidebar-doctor') %>
+
+    <main class="flex-1 space-y-8">
+      
+      <!-- Patient Profile Header -->
+      <div class="glass p-6 md:p-8 rounded-3xl border border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.3)] relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                  <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1">Patient History Profile</p>
+                  <h2 class="text-2xl font-extrabold text-white"><%= patient.name %></h2>
+                  <p class="text-xs text-gray-400 mt-1 font-mono">Registered on: <%= patient.created_at.toISOString().slice(0, 10) %></p>
+              </div>
+              <div class="flex flex-wrap gap-4 text-xs font-mono">
+                  <div class="bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl">
+                      <span class="text-purple-400 uppercase tracking-widest text-[9px] block mb-0.5">Age</span>
+                      <span class="text-white font-bold"><%= patient.age %> Years</span>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl">
+                      <span class="text-purple-400 uppercase tracking-widest text-[9px] block mb-0.5">Gender</span>
+                      <span class="text-white font-bold"><%= patient.gender %></span>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl">
+                      <span class="text-purple-400 uppercase tracking-widest text-[9px] block mb-0.5">Phone</span>
+                      <span class="text-white font-bold"><%= patient.phone || 'N/A' %></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Vitals History -->
+      <div class="space-y-6">
+          <h3 class="text-lg font-bold text-white tracking-wide flex items-center gap-2"><i class="fas fa-heartbeat text-purple-400"></i> Logged Vitals History</h3>
+          <div class="glass rounded-3xl border border-white/5 overflow-hidden shadow-sm">
+              <% if (vitals.length === 0) { %>
+                  <div class="p-8 text-center text-gray-500 text-xs font-mono">No vitals logs recorded by this patient.</div>
+              <% } else { %>
+                  <div class="overflow-x-auto scrollbar-thin">
+                      <table class="w-full text-left text-xs whitespace-nowrap">
+                          <thead class="bg-white/5 border-b border-white/10 text-gray-400">
+                              <tr>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">Date/Time</th>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">BP</th>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">Sugar</th>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">Heart Rate</th>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">Weight</th>
+                                  <th class="px-6 py-4 font-bold text-[10px] uppercase tracking-widest text-purple-400">Temp</th>
+                              </tr>
+                          </thead>
+                          <tbody class="divide-y divide-white/5">
+                              <% vitals.forEach(function(v) { %>
+                              <tr class="hover:bg-white/5 transition">
+                                  <td class="px-6 py-4 text-white font-mono"><%= v.logged_at.toISOString().replace('T', ' ').substring(0, 16) %></td>
+                                  <td class="px-6 py-4">
+                                      <% 
+                                        let bp = v.blood_pressure;
+                                        if (!bp) { %>
+                                            <span class="text-gray-600">-</span>
+                                        <% } else {
+                                            let bpParts = bp.split('/');
+                                            let sys = parseInt(bpParts[0]) || 120;
+                                            let dia = parseInt(bpParts[1]) || 80;
+                                            let clr = "text-green-400";
+                                            if (sys >= 140 || dia >= 90) clr = "text-red-400 font-bold";
+                                            else if (sys >= 120 || dia >= 80) clr = "text-amber-400";
+                                        %>
+                                            <span class="font-mono <%= clr %>"><%= bp %> <span class="text-[10px] text-gray-500">mmHg</span></span>
+                                        <% } %>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                      <% 
+                                        let bs = v.blood_sugar;
+                                        if (bs === null) { %>
+                                            <span class="text-gray-600">-</span>
+                                        <% } else {
+                                            let clr = (bs > 140 || bs < 70) ? "text-red-400 font-bold" : "text-green-400";
+                                        %>
+                                            <span class="font-mono <%= clr %>"><%= parseFloat(bs) %> <span class="text-[10px] text-gray-500">mg/dL</span></span>
+                                        <% } %>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                      <% 
+                                        let hr = v.heart_rate;
+                                        if (hr === null) { %>
+                                            <span class="text-gray-600">-</span>
+                                        <% } else {
+                                            let clr = (hr > 100 || hr < 60) ? "text-red-400 font-bold" : "text-green-400";
+                                        %>
+                                            <span class="font-mono <%= clr %>"><%= parseInt(hr) %> <span class="text-[10px] text-gray-500">bpm</span></span>
+                                        <% } %>
+                                  </td>
+                                  <td class="px-6 py-4 text-gray-300 font-mono">
+                                      <%- v.weight !== null ? parseFloat(v.weight) + " <span class='text-[10px] text-gray-500'>kg</span>" : '<span class="text-gray-600">-</span>' %>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                      <% 
+                                        let temp = v.temperature;
+                                        if (temp === null) { %>
+                                            <span class="text-gray-600">-</span>
+                                        <% } else {
+                                            let clr = (temp >= 99.5) ? "text-red-400 font-bold" : "text-green-400";
+                                        %>
+                                            <span class="font-mono <%= clr %>"><%= parseFloat(temp) %> <span class="text-[10px] text-gray-500">°F</span></span>
+                                        <% } %>
+                                  </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                      </table>
+                  </div>
+              <% } %>
+          </div>
+      </div>
+
+      <!-- History List -->
+      <div class="space-y-6">
+          <h3 class="text-lg font-bold text-white tracking-wide">Medical Records & Visit Logs</h3>
+          
+          <% if (appointments.length === 0) { %>
+              <div class="glass p-12 text-center text-gray-500 text-sm font-mono rounded-3xl border border-white/5">
+                  No appointments found for this patient.
+              </div>
+          <% } else { %>
+              <div class="space-y-4">
+                  <% appointments.forEach(function(a) { %>
+                      <div class="glass p-6 rounded-3xl border border-white/5 shadow-sm space-y-4 hover:border-purple-500/30 transition">
+                          <div class="flex justify-between items-start border-b border-white/5 pb-3">
+                              <div>
+                                  <span class="text-xs font-bold text-gray-400">Consultant:</span>
+                                  <span class="text-sm font-bold text-white block">Dr. <%= a.doctor_name %></span>
+                                  <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest"><%= a.specialization %></span>
+                              </div>
+                              <div class="text-right">
+                                  <span class="text-xs text-gray-500 font-mono block mb-1"><%= a.appointment_date.toISOString().slice(0, 10) %></span>
+                                  <% 
+                                      let stl = "bg-white/5 text-gray-400 border-white/10";
+                                      if(a.status === 'Pending') stl = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+                                      else if(a.status === 'Confirmed') stl = "bg-blue-500/20 text-blue-400 border-blue-500/30";
+                                      else if(a.status === 'Completed') stl = "bg-green-500/20 text-green-400 border-green-500/30";
+                                      else if(a.status === 'Cancelled') stl = "bg-red-500/20 text-red-400 border-red-500/30";
+                                  %>
+                                  <span class="px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest rounded border <%= stl %>"><%= a.status %></span>
+                              </div>
+                          </div>
+                          
+                          <% if (a.status === 'Completed') { %>
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                                  <div class="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                      <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-2"><i class="fas fa-prescription-bottle-medical mr-1.5"></i>Prescription</p>
+                                      <p class="text-sm text-gray-200 leading-relaxed font-mono whitespace-pre-wrap"><%= a.prescription || 'No prescription entered.' %></p>
+                                  </div>
+                                  <div class="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                      <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-2"><i class="fas fa-file-medical mr-1.5"></i>Doctor Notes / Advice</p>
+                                      <p class="text-sm text-gray-200 leading-relaxed whitespace-pre-wrap"><%= a.doctor_notes || 'No notes entered.' %></p>
+                                  </div>
+                              </div>
+                          <% } else { %>
+                              <p class="text-xs text-gray-500 font-mono italic">No clinical treatment records uploaded for this visit slot.</p>
+                          <% } %>
+                      </div>
+                  <% }) %>
+              </div>
+          <% } %>
+      </div>
+
+    </main>
+
+  </div>
+</body>
+</html>

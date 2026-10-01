@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .neon-text { text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+    .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen relative flex flex-col md:flex-row overflow-hidden">
+  
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[150px] pointer-events-none z-0"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[150px] pointer-events-none z-0"></div>
+
+  <!-- LEFT SIDEBAR -->
+  <%- include('../includes/sidebar-admin') %>
+
+  <!-- RIGHT CONTENT -->
+  <main class="flex-1 p-6 lg:p-10 space-y-8 overflow-y-auto max-h-screen relative z-10 scrollbar-thin">
+      
+      <h2 class="text-3xl font-bold text-white tracking-wide">Administrator Dashboard</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+        
+        <div class="glass p-6 rounded-3xl relative overflow-hidden flex items-center justify-between group shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+          <div class="relative z-10">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Patients</p>
+            <p class="text-3xl font-extrabold text-white"><%= stats.patients %></p>
+          </div>
+          <div class="relative z-10 w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 text-xl shadow-[inset_0_0_10px_rgba(59,130,246,0.2)]">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-3xl relative overflow-hidden flex items-center justify-between group shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+          <div class="relative z-10">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Doctors</p>
+            <p class="text-3xl font-extrabold text-white"><%= stats.doctors %></p>
+          </div>
+          <div class="relative z-10 w-12 h-12 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400 text-xl shadow-[inset_0_0_10px_rgba(16,185,129,0.2)]">
+            <i class="fas fa-user-md"></i>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-3xl relative overflow-hidden flex items-center justify-between group shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+          <div class="relative z-10">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Registered Diseases</p>
+            <p class="text-3xl font-extrabold text-white"><%= stats.diseases %></p>
+          </div>
+          <div class="relative z-10 w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-400 text-xl shadow-[inset_0_0_10px_rgba(168,85,247,0.2)]">
+            <i class="fas fa-virus"></i>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-3xl relative overflow-hidden flex items-center justify-between group shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+          <div class="relative z-10">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Appointments</p>
+            <p class="text-3xl font-extrabold text-white"><%= stats.appointments %></p>
+          </div>
+          <div class="relative z-10 w-12 h-12 bg-cyan-500/20 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400 text-xl shadow-[inset_0_0_10px_rgba(6,182,212,0.2)]">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="glass p-10 rounded-3xl text-center border border-white/5 mt-8 relative overflow-hidden">
+         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+         <i class="fas fa-shield-alt text-6xl text-cyan-500/40 mb-6 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]"></i>
+         <h3 class="text-2xl font-bold text-white mb-2">System Secure and Running</h3>
+         <p class="text-gray-400 text-sm max-w-md mx-auto">Welcome to the administration dashboard. All core medical and user databases are currently synced and operational.</p>
+      </div>
+
+  </main>
+</body>
+</html>

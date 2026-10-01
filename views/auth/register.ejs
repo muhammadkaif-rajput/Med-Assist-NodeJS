@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | MedAssist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen flex items-center justify-center p-4 py-12 relative overflow-hidden">
+
+  <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[150px] pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/20 blur-[150px] pointer-events-none"></div>
+
+  <div class="w-full max-w-xl relative z-10">
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.5)] rounded-2xl font-bold mb-4">
+          <i class="fas fa-heartbeat text-2xl"></i>
+        </div>
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">Create Account</h2>
+        <p class="text-gray-400 mt-2 text-sm">Join MedAssist to check symptoms and book appointments</p>
+    </div>
+
+    <div class="glass rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-600"></div>
+
+        <% if (error) { %>
+            <div class="bg-red-500/20 text-red-300 p-4 rounded-xl text-sm mb-6 border border-red-500/30 flex items-center gap-3 backdrop-blur-sm">
+                <i class="fas fa-exclamation-triangle"></i> <%= error %>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="bg-green-500/20 text-green-300 p-4 rounded-xl text-sm mb-6 border border-green-500/30 flex items-center justify-between backdrop-blur-sm">
+                <span class="flex items-center gap-2"><i class="fas fa-check-circle"></i> <%= success %></span>
+                <a href="/auth/login" class="font-bold bg-green-500 hover:bg-green-400 text-gray-900 px-3 py-1.5 rounded-lg shadow-[0_0_10px_rgba(34,197,94,0.5)] transition">Login here</a>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/auth/register">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Full Name</label>
+                    <input type="text" name="name" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Email Address</label>
+                    <input type="email" name="email" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" required>
+                </div>
+            </div>
+            
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Password</label>
+                <input type="password" name="password" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" required minlength="6">
+            </div>
+            
+            <div class="grid grid-cols-3 gap-5 mb-5">
+                <div class="col-span-1">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Age</label>
+                    <input type="number" name="age" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Gender</label>
+                    <select name="gender" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm appearance-none">
+                        <option value="Male" class="bg-gray-800">Male</option>
+                        <option value="Female" class="bg-gray-800">Female</option>
+                        <option value="Other" class="bg-gray-800">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Phone Number</label>
+                    <input type="text" name="phone" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Account Type</label>
+                    <select name="role" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm appearance-none">
+                        <option value="patient" class="bg-gray-800">Patient</option>
+                        <option value="admin" class="bg-gray-800">Admin</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition transform hover:-translate-y-0.5 tracking-wide">
+                Register
+            </button>
+        </form>
+    </div>
+    
+    <div class="mt-8 text-center text-sm">
+        <p class="text-gray-500">Already signed up? <a href="/auth/login" class="text-cyan-400 font-bold hover:text-cyan-300 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]">Login</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

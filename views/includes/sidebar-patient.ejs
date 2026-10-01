@@ -1,0 +1,35 @@
+<aside class="w-full md:w-64 shrink-0 space-y-4">
+  <div class="glass p-5 rounded-2xl relative overflow-hidden mb-8">
+    <div class="absolute top-0 left-0 w-1 h-full bg-cyan-500"></div>
+    <p class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest mb-1">Patient Info</p>
+    <p class="font-bold text-white text-lg truncate"><%= userName %></p>
+  </div>
+  
+  <a href="/patient/dashboard" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'dashboard' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-home w-5 <%= activePage === 'dashboard' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Dashboard
+  </a>
+  <a href="/patient/symptoms" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'symptoms' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-microscope w-5 <%= activePage === 'symptoms' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Check Symptoms
+  </a>
+  <a href="/patient/book-appointment" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'book-appointment' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-calendar-plus w-5 <%= activePage === 'book-appointment' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Book Appointment
+  </a>
+  <a href="/patient/appointments" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'appointments' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-history w-5 <%= activePage === 'appointments' ? 'text-cyan-400' : 'text-gray-500' %>"></i> My Appointments
+  </a>
+  <a href="/patient/vitals" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'vitals' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-heartbeat w-5 <%= activePage === 'vitals' ? 'text-cyan-400' : 'text-gray-500' %>"></i> My Vitals Log
+  </a>
+  <a href="/patient/medicines" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'medicines' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-prescription-bottle-medical w-5 <%= activePage === 'medicines' ? 'text-cyan-400' : 'text-gray-500' %>"></i> My Medicines
+  </a>
+  <a href="/patient/diet-tracker" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'diet-tracker' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-glass-water w-5 <%= activePage === 'diet-tracker' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Diet & Water
+  </a>
+  <a href="/patient/diabetes-predict" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'diabetes-predict' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-heartbeat w-5 <%= activePage === 'diabetes-predict' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Diabetes Risk
+  </a>
+  <a href="/patient/messages" class="flex items-center gap-4 px-5 py-3 rounded-xl text-sm <%= activePage === 'messages' ? 'font-bold bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-white shadow-[0_0_15px_rgba(6,182,212,0.2)]' : 'font-semibold text-gray-400 hover:bg-white/5' %> transition">
+    <i class="fas fa-comments w-5 <%= activePage === 'messages' ? 'text-cyan-400' : 'text-gray-500' %>"></i> Messages
+  </a>
+</aside>
