@@ -19,38 +19,38 @@
     }
   </style>
 </head>
-<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="bg-[#0b1120] text-gray-200 antialiased min-h-screen flex flex-col items-center justify-center p-4 py-6 relative overflow-y-auto">
 
   <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/30 blur-[150px] pointer-events-none"></div>
   <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/30 blur-[150px] pointer-events-none"></div>
 
-  <div class="w-full max-w-md relative z-10">
-    <div class="text-center mb-10">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.5)] rounded-2xl font-bold mb-6">
-          <i class="fas fa-heartbeat text-3xl"></i>
+  <div class="w-full max-w-md relative z-10 my-auto">
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)] rounded-2xl font-bold mb-3">
+          <i class="fas fa-heartbeat text-2xl"></i>
         </div>
-        <h2 class="text-3xl font-extrabold text-white tracking-tight">Welcome Back</h2>
-        <p class="text-gray-400 mt-2 text-sm">Please sign in to your dashboard</p>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">Welcome Back</h2>
+        <p class="text-gray-400 mt-1 text-xs">Please sign in to your dashboard</p>
     </div>
 
-    <div class="glass rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
+    <div class="glass rounded-3xl p-6 md:p-7 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-600"></div>
 
         <% if (error) { %>
-            <div class="bg-red-500/20 text-red-300 p-4 rounded-xl text-sm mb-6 border border-red-500/30 flex items-center gap-3 backdrop-blur-sm">
+            <div class="bg-red-500/20 text-red-300 p-3.5 rounded-xl text-xs mb-4 border border-red-500/30 flex items-center gap-2 backdrop-blur-sm">
                 <i class="fas fa-exclamation-circle"></i> <%= error %>
             </div>
         <% } %>
 
         <form method="POST" action="/auth/login">
-            <div class="mb-5">
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Email Address</label>
-                <input type="email" name="email" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" placeholder="user@example.com" required>
+            <div class="mb-4">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Email Address</label>
+                <input type="email" name="email" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" placeholder="user@example.com" required>
             </div>
-            <div class="mb-5">
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Login As</label>
+            <div class="mb-4">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Login As</label>
                 <div class="relative">
-                    <select name="role" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm appearance-none cursor-pointer" required>
+                    <select name="role" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm appearance-none cursor-pointer" required>
                         <option value="patient" class="bg-gray-800">Patient</option>
                         <option value="doctor" class="bg-gray-800">Doctor</option>
                         <option value="admin" class="bg-gray-800">Admin</option>
@@ -58,18 +58,18 @@
                     <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"></i>
                 </div>
             </div>
-            <div class="mb-8">
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Password</label>
-                <input type="password" name="password" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" placeholder="••••••••" required>
+            <div class="mb-6">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Password</label>
+                <input type="password" name="password" class="w-full bg-white/5 border border-white/10 text-white rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition transform hover:-translate-y-0.5 tracking-wide">
+            <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition transform hover:-translate-y-0.5 tracking-wide text-sm">
                 Sign In
             </button>
+
+            <div class="mt-4 pt-3 border-t border-white/10 text-center text-xs">
+                <p class="text-gray-400">Don't have an account? <a href="/auth/register" class="text-cyan-400 font-bold hover:text-cyan-300 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)] ml-1">Register here</a></p>
+            </div>
         </form>
-    </div>
-    
-    <div class="mt-8 text-center text-sm">
-        <p class="text-gray-500">Don't have an account? <a href="/auth/register" class="text-cyan-400 font-bold hover:text-cyan-300 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]">Register here</a></p>
     </div>
   </div>
 
